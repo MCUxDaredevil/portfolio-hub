@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Any
 from enum import IntEnum
 
 
@@ -8,11 +8,11 @@ class Proficiency(IntEnum):
     Beginner = 0.4
     Intermediate = 0.6
     Advanced = 0.8
-    Expert = 1.0
+    Expert = 0.99  # Can never be 1.0
 
 
 class Project(BaseModel):
-    project_id: str
+    _id: int
     name: str
     summary: str
     description: Optional[str]
@@ -20,15 +20,22 @@ class Project(BaseModel):
     live_url: Optional[str]
     tags: list[str] = []
     image: Optional[str]
-    technologies: list[str] = []
+    technologies: list[dict[int, str]] = []
 
 
 class Technology(BaseModel):
-    technology_id: str
+    _id: int
     name: str
     description: Optional[str]
     proficiency: Proficiency = Proficiency.Novice
     image: Optional[str]
-    projects: list[str] = []
+    projects: list[dict[int, str]] = []
 
 
+def response(success: bool, message: str, data: Any = None) -> dict:
+    """Returns a formatted response."""
+    return {
+        "success": success,
+        "message": message,
+        "data": data
+    }

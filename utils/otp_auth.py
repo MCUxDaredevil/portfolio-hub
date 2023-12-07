@@ -1,3 +1,4 @@
+import os
 import pyotp
 
 
@@ -27,13 +28,12 @@ def generate_security_qr():
     os.remove(filename)
 
 
-def get_otp(secret_key):
-    """Generate an OTP using the secret key provided."""
-    return pyotp.TOTP(secret_key).now()
+def authenticate_otp(otp):
+    """Authenticate an OTP using the secret key provided."""
+    return pyotp.TOTP(os.getenv("TOTP_KEY")).verify(otp)
 
 
 if __name__ == '__main__':
-    import os
     import pyclip
     import segno
     from matplotlib import pyplot as plt

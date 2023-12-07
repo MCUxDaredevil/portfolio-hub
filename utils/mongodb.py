@@ -8,8 +8,12 @@ class MongoDB:
     def __init__(self, db_name):
         """Initializes a MongoDB client and database."""
 
-        self.__client = MongoClient(os.getenv('MONGODB_URI'))
+        self.__client = MongoClient(os.getenv('MONGO_URI'))
         self.__db = self.__client[db_name]
+
+    def get_collection_names(self) -> list:
+        """Returns a list of collection names."""
+        return self.__db.list_collection_names()
 
     def find_one(self, collection, query) -> dict:
         """Returns a single document from the collection."""

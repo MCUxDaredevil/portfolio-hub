@@ -3,7 +3,11 @@ from fastapi import FastAPI, Depends
 from models import Technology, Project
 from typing import Annotated
 
+from utils.otp_auth import get_otp
+from utils.mongodb import MongoDB
+
 app = FastAPI()
+mongodb = MongoDB("ProjectTrackerAPI")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

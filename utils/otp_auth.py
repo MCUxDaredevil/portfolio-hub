@@ -2,6 +2,12 @@ import os
 import pyotp
 
 
+unauthorized_msg = {
+    "success": False,
+    "message": "You are not authorized to access this route."
+}
+
+
 def generate_security_qr():
     """
     Generates a QR code for the user to scan with their 2FA app.

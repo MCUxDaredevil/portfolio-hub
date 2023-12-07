@@ -1,11 +1,10 @@
 import os
 
 from fastapi import FastAPI
-from pymongo import MongoClient
 
 from models import Technology, Project, response
 
-from utils.otp_auth import authenticate_otp
+from utils.otp_auth import authenticate_otp, unauthorized_msg
 from utils.mongodb import MongoDB
 from dotenv import load_dotenv
 
@@ -23,10 +22,47 @@ async def root():
 async def get_technologies(otp: str = None):
     """Returns a list of all technologies."""
     if os.getenv("AUTH") != "False" and not authenticate_otp(otp):
-        return response(False, "You are not authorized to access this route.")
+        return response(**unauthorized_msg)
+
     return response(
         True,
         "Successfully retrieved all technologies.",
         mongodb.find("technologies", {})
     )
 
+
+@app.get("/technologies/{technology_id}")
+async def get_technology(technology_id: int, otp: str = None):
+    """Returns a single technology."""
+    if os.getenv("AUTH") != "False" and not authenticate_otp(otp):
+        return response(**unauthorized_msg)
+
+    technology = mongodb.find_one("technologies", {"_id": technology_id})
+    if not technology:
+        return response(False, "Technology not found.")
+    return response(True, "Successfully retrieved technology.", technology)
+
+
+@app.get("/projects")
+async def get_projects(otp: str = None):
+    """Returns a list of all projects."""
+    if os.getenv("AUTH") != "False" and not authenticate_otp(otp):
+        return response(**unauthorized_msg)
+
+    return response(
+        True,
+        "Successfully retrieved all projects.",
+        mongodb.find("projects", {})
+    )
+
+
+@app.get("/projects/{project_id}")
+async def get_project(project_id: int, otp: str = None):
+    """Returns a single project."""
+    if os.getenv("AUTH") != "False" and not authenticate_otp(otp):
+        return response(**unauthorized_msg)
+
+    project = mongodb.find_one("projects", {"_id": project_id})
+    if not project:
+        return response(False, "Project not found.")
+    return response(True, "Successfully retrieved project.", project)

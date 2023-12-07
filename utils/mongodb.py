@@ -1,32 +1,44 @@
 import os
 
-import motor.motor_asyncio as motor
+from pymongo import MongoClient
+from pymongo.results import InsertOneResult, InsertManyResult, UpdateResult, DeleteResult
 
 
 class MongoDB:
     def __init__(self, db_name):
-        self.__client = motor.AsyncIOMotorClient(os.getenv('MONGODB_URI'))
+        """Initializes a MongoDB client and database."""
+
+        self.__client = MongoClient(os.getenv('MONGODB_URI'))
         self.__db = self.__client[db_name]
-        for collection_name in self.__db.list_collection_names():
-            setattr(self, collection_name, self.__db[collection_name])
 
-    def __getitem__(self, item):
-        return getattr(self, item)
+    def find_one(self, collection, query) -> dict:
+        """Returns a single document from the collection."""
+        return self.__db[collection].find_one(query)
 
-    def insert(self, collection_name, data):
-        return self[collection_name].insert_one(data)
+    def find(self, collection, query) -> list:
+        """Returns a list of documents from the collection."""
+        return list(self.__db[collection].find(query))
 
-    def find(self, collection_name, query):
-        return self[collection_name].find(query)
+    def insert_one(self, collection, document) -> InsertOneResult:
+        """Inserts a single document into the collection."""
+        return self.__db[collection].insert_one(document)
 
-    def find_one(self, collection_name, query):
-        return self[collection_name].find_one(query)
+    def insert_many(self, collection, documents) -> InsertManyResult:
+        """Inserts a list of documents into the collection."""
+        return self.__db[collection].insert_many(documents)
 
-    def update(self, collection_name, query, data):
-        return self[collection_name].update_one(query, data)
+    def update_one(self, collection, query, update) -> UpdateResult:
+        """Updates a single document in the collection."""
+        return self.__db[collection].find_one_and_update(query, update)
 
-    def delete(self, collection_name, query):
-        return self[collection_name].delete_one(query)
+    def update_many(self, collection, query, update) -> UpdateResult:
+        """Updates multiple documents in the collection."""
+        return self.__db[collection].update_many(query, update)
 
-    def delete_many(self, collection_name, query):
-        return self[collection_name].delete_many(query)
+    def delete_one(self, collection, query) -> DeleteResult:
+        """Deletes a single document from the collection."""
+        return self.__db[collection].find_one_and_delete(query)
+
+    def delete_many(self, collection, query) -> DeleteResult:
+        """Deletes multiple documents from the collection."""
+        return self.__db[collection].delete_many(query)

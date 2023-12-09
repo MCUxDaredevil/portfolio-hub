@@ -1,6 +1,11 @@
 from pydantic import BaseModel
 from typing import Optional, Any
-from enum import IntEnum
+from enum import IntEnum, Enum
+
+
+class Tags(Enum):
+    projects = ["projects"]
+    technologies = ["technologies"]
 
 
 class Proficiency(IntEnum):

@@ -37,10 +37,10 @@ async def get_technology(technology_id: int, otp: str = None):
     if os.getenv("AUTH") != "False" and not authenticate_otp(otp):
         return response(**unauthorized_msg)
 
-    technology = mongodb.find_one("technologies", {"_id": technology_id})
-    if not technology:
+    if technology := mongodb.find_one("technologies", {"_id": technology_id}):
+        return response(True, "Successfully retrieved technology.", technology)
+    else:
         return response(False, "Technology not found.")
-    return response(True, "Successfully retrieved technology.", technology)
 
 
 @app.get("/projects")
@@ -62,7 +62,7 @@ async def get_project(project_id: int, otp: str = None):
     if os.getenv("AUTH") != "False" and not authenticate_otp(otp):
         return response(**unauthorized_msg)
 
-    project = mongodb.find_one("projects", {"_id": project_id})
-    if not project:
+    if project := mongodb.find_one("projects", {"_id": project_id}):
+        return response(True, "Successfully retrieved project.", project)
+    else:
         return response(False, "Project not found.")
-    return response(True, "Successfully retrieved project.", project)

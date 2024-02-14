@@ -14,7 +14,7 @@ def generate_security_qr():
     Only use this when running locally or when you can access the machine running this code.
     This will generate a temporary QR code image and then delete it after it is displayed.
     Just copy the key from the image and paste it into an environment variable called TOTP_KEY.
-    Use a mobile 2FA app to scan the QR and access the API admin routes.
+    Use a mobile 2FA app to scan the QR and access the admin routes.
     """
 
     key = pyotp.random_base32()

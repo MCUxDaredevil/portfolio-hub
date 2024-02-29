@@ -5,3 +5,5 @@ python-dotenv~=1.0.1
 pyclip~=0.7.0
 segno~=1.6.1
 matplotlib~=3.8.2
+starlette~=0.36.3
+pydantic~=2.6.0

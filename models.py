@@ -1,11 +1,7 @@
-from pydantic import BaseModel
+from enum import IntEnum
 from typing import Optional, Any
-from enum import IntEnum, Enum
 
-
-class Tags(Enum):
-    projects = ["projects"]
-    technologies = ["technologies"]
+from pydantic import BaseModel
 
 
 class Proficiency(IntEnum):
@@ -17,7 +13,7 @@ class Proficiency(IntEnum):
 
 
 class Project(BaseModel):
-    _id: int
+    id: str
     name: str
     summary: str
     description: Optional[str]
@@ -29,11 +25,12 @@ class Project(BaseModel):
 
 
 class Technology(BaseModel):
-    _id: int
+    id: str
     name: str
     description: Optional[str]
     proficiency: Proficiency = Proficiency.Novice
     image: Optional[str]
+    visibility: bool = True
     projects: list[dict[int, str]] = []
 
 

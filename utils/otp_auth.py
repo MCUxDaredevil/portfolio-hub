@@ -20,7 +20,10 @@ def generate_security_qr():
     key = pyotp.random_base32()
     url = pyotp.totp.TOTP(key).provisioning_uri(name="MCUxDaredevil", issuer_name="Project Tracker API")
     qr = segno.make_qr(url)
-    pyclip.copy(key)
+    try:
+        pyclip.copy(key)
+    except pyclip.base.ClipboardException:
+        print("Failed to copy key to clipboard.")
     filename = f"./{key}.png"
     qr.save(filename, scale=15, light="#feffff")
     img = mpimg.imread(filename)

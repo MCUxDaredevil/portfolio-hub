@@ -1,5 +1,6 @@
 import os
 
+from fastapi import FastAPI, Depends
 from pymongo import MongoClient
 from pymongo.results import InsertOneResult, InsertManyResult, UpdateResult, DeleteResult
 
@@ -46,3 +47,7 @@ class MongoDB:
     def delete_many(self, collection, query) -> DeleteResult:
         """Deletes multiple documents from the collection."""
         return self.__db[collection].delete_many(query)
+
+
+def get_db(app: FastAPI = Depends()):
+    return app.mongodb

@@ -1,19 +1,19 @@
-from enum import IntEnum
+from enum import StrEnum
 from typing import Optional, Any
 
 from pydantic import BaseModel
 
 
-class Proficiency(IntEnum):
-    Novice = 0.2
-    Beginner = 0.4
-    Intermediate = 0.6
-    Advanced = 0.8
-    Expert = 0.99  # Can never be 1.0
+class Proficiency(StrEnum):
+    Novice = "Novice"
+    Beginner = "Beginner"
+    Intermediate = "Intermediate"
+    Advanced = "Advanced"
+    Expert = "Expert"
 
 
 class Project(BaseModel):
-    id: str
+    id: str = "p000"
     name: str
     summary: str
     description: Optional[str]
@@ -25,10 +25,10 @@ class Project(BaseModel):
 
 
 class Technology(BaseModel):
-    id: str
+    id: str = "t000"
     name: str
     description: Optional[str]
-    proficiency: Proficiency = Proficiency.Novice
+    proficiency: str = Proficiency.Novice
     image: Optional[str]
     visibility: bool = True
     projects: list[dict[int, str]] = []

@@ -15,11 +15,9 @@ class Proficiency(StrEnum):
 class Project(BaseModel):
     id: str = "p000"
     name: str
-    summary: str
     description: Optional[str]
     github_repo: Optional[str]
     live_url: Optional[str]
-    tags: list[str] = []
     image: Optional[str]
     technologies: list[dict[int, str]] = []
 

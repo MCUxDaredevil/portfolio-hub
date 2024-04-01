@@ -12,8 +12,9 @@ from utils.otp_auth import unauthorized_msg, authenticate_otp
 load_dotenv()
 app = FastAPI()
 
-mongodb = MongoDB(getenv("DB_NAME"))
 
+mongodb = MongoDB()
+mongodb.resolve_db()
 
 @app.get("/")
 async def root():

@@ -5,10 +5,16 @@ from pymongo.results import InsertOneResult, InsertManyResult, UpdateResult, Del
 
 
 class MongoDB:
-    def __init__(self, db_name):
+    def __init__(self):
         """Initializes a MongoDB client and database."""
+        self.db = None
         self.client = MongoClient(os.getenv('MONGO_URI'))
-        self.db = self.client[db_name]
+
+    def resolve_db(self, db_name: str = None):
+        if os.getenv("LOCAL") == "True":
+            self.db = self.client[os.getenv('MONGO_DB')]
+        else:
+            self.db = self.client[db_name or os.getenv('MONGO_DB')]
 
     def find_one(self, collection, query, projection=None) -> dict:
         """Returns a single document from the collection."""

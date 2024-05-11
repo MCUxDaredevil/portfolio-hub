@@ -1,20 +1,25 @@
 import os
 
 from pymongo import MongoClient
-from pymongo.results import InsertOneResult, InsertManyResult, UpdateResult, DeleteResult
+from pymongo.results import (
+    DeleteResult,
+    InsertManyResult,
+    InsertOneResult,
+    UpdateResult,
+)
 
 
 class MongoDB:
     def __init__(self):
         """Initializes a MongoDB client and database."""
         self.db = None
-        self.client = MongoClient(os.getenv('MONGO_URI'))
+        self.client = MongoClient(os.getenv("MONGO_URI"))
 
     def resolve_db(self, db_name: str = None):
         if os.getenv("LOCAL") == "True":
-            self.db = self.client[os.getenv('MONGO_DB')]
+            self.db = self.client[os.getenv("DB_NAME")]
         else:
-            self.db = self.client[db_name or os.getenv('MONGO_DB')]
+            self.db = self.client[db_name or os.getenv("DB_NAME")]
 
     def find_one(self, collection, query, projection=None) -> dict:
         """Returns a single document from the collection."""

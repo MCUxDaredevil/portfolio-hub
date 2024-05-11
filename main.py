@@ -6,9 +6,9 @@ from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 
-from models import response, Project, Technology
+from models import Project, Technology, response
 from utils.mongodb import MongoDB
-from utils.otp_auth import unauthorized_msg, authenticate_otp
+from utils.otp_auth import authenticate_otp, unauthorized_msg
 
 load_dotenv()
 app = FastAPI()
@@ -46,7 +46,7 @@ async def get_all_projects(otp: str = None):
     return response(
         True,
         "Successfully retrieved all projects.",
-        mongodb.find("projects", {"_id": {"$ne": 0}})
+        mongodb.find("projects", {"_id": {"$ne": 0}}),
     )
 
 
@@ -95,7 +95,7 @@ async def get_all_technologies(otp: str = None):
     return response(
         True,
         "Successfully retrieved all technologies.",
-        mongodb.find("technologies", {"_id": {"$ne": 0}})
+        mongodb.find("technologies", {"_id": {"$ne": 0}}),
     )
 
 
